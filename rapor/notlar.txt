@@ -1,0 +1,116 @@
+===============================
+YEMEKHANE OTOMASYONU - NOTLARIM 
+===============================
+
+--- 1. BİLGİLER ---
+
+Veritabanı adı: yemekhane
+
+Kullanıcılar:
+  Uygulama: yemekhane_app / Uyg_2026
+  Yönetici: root / yemekhane_kok
+  Replikasyon: repl / Repl_2026
+
+Bilgisayarımdan bağlanırken:
+  Kaynak     = localhost:3307
+  Replika    = localhost:3308
+  Redis      = localhost:6379
+  Web sitesi = localhost:8080
+
+Container içinden bağlanırken:
+  mysql-primary:3306
+  mysql-replica:3306
+  redis:6379
+  DİKKAT: container içinde "localhost" yazılmaz!
+  
+
+Test kullanıcıları, şifre: Yemek2026!
+  leyla.arslan@kampus.edu.tr       = yönetici 
+  murat.kaya@kampus.edu.tr         = personel 
+  ayse.demir@ogr.kampus.edu.tr     = öğrenci, bakiye 12,50 TL
+                                     ("Bakiye yetersiz." hatası için)
+  mehmet.yildiz@ogr.kampus.edu.tr  = öğrenci, normal bakiye
+
+
+--- 2. SERVİSLER ---
+
+mysql-primary:
+  Ana veritabanı. Yazma işlemleri buraya gider.
+  Örnek: rezervasyon yapmak, bakiye yüklemek.
+
+mysql-replica:
+  Kopya veritabanı. Sadece okuma yapılır (salt okunur).
+  Aynı zamanda yedek: kaynak bozulursa veri burada var.
+
+replica-setup:
+  Replikayı bir kez kurar, sonra kapanır.
+  Exited (0) = başarılı. Bu normaldir.
+
+redis:
+  Çok hızlı hafıza.
+  Menü önbelleği ve oturum (session) burada saklanır.
+
+frontend:
+  Apache web sunucusu. Adres: localhost:8080.
+  HTML ve CSS dosyalarını gösterir.
+  İstekleri uygulamaya gönderir.
+
+uygulama:
+  Benim yazacağım program. Port: 8000.
+  Veritabanına sadece bu servis bağlanır.
+
+
+--- 3. KELİMELER ---
+
+container     = kutu içinde çalışan program
+image (imaj)  = container'ın şablonu 
+volume        = kalıcı depolama . Container silinse bile
+                veri kalır.
+healthcheck   = sağlık kontrolü. Servis çalışıyor mu? 
+healthy       = sağlıklı, çalışıyor 
+port          = kapı numarası 
+ağ (network)  = container'ların birbirine bağlandığı yer 
+replikasyon   = verinin başka sunucuya kopyalanması 
+kaynak        = source, ana sunucu 
+replika       = kopya sunucu 
+GTID          = her işlemin tek numarası
+                Replika hangi işlemi almadığını bilir ve onları alır.
+salt okunur   = read-only. Sadece okunur, yazılamaz
+önbellek      = cache. Hızlı erişim için geçici kopya 
+oturum        = session. Giriş yapan kullanıcının bilgisi
+migration     = veritabanı değişikliği dosyası
+stored procedure (saklı yordam) = veritabanındaki hazır işlem
+view (görünüm) = hazır sorgu, sanal tablo 
+bakiye        = hesaptaki para 
+rezervasyon   = yer ayırtma 
+hata          = error 
+
+
+--- 4. KOMUTLAR ---
+
+docker compose up -d       = sistemi arka planda başlatır 
+docker compose ps -a       = tüm servislerin durumunu gösterir
+docker compose stop X      = X servisini durdurur
+docker compose start X     = X servisini başlatır
+docker compose logs X      = X servisinin günlüğünü gösterir 
+docker compose down        = servisleri kapatır, veri KALIR
+docker compose down -v     = servisleri kapatır, TÜM VERİ SİLİNİR! 
+
+
+--- 5. AŞAMA 1 İÇİN CÜMLELER ---
+
+"Bu komut tüm servislerin durumunu gösterir."
+"Tüm servisler healthy, replica-setup Exited (0) ile bitti."
+"Kaynakta bakiye yükledim, replikada da aynı bakiyeyi gördüm."
+"Replikaya yazma denemesi read-only hatası verdi (ERROR 1290)."
+"Replikayı durdurdum, kaynakta değişiklik yaptım, replikayı başlattım.
+ Replika kaçırdığı değişiklikleri aldı. Bunun sebebi GTID."
+"Replikasyon asenkrondur, bu yüzden yeni veri replikada hemen görünmeyebilir."
+
+--- ASAMA 1: docker compose ps -a ---
+NAME                        IMAGE                COMMAND                  SERVICE         CREATED          STATUS                      PORTS
+yemekhane-frontend-1        yemekhane-frontend   "httpd-foreground -D…"   frontend        43 seconds ago   Up 41 seconds (healthy)     0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+yemekhane-mysql-primary-1   mysql:8.4            "docker-entrypoint.s…"   mysql-primary   7 minutes ago    Up 7 minutes (healthy)      0.0.0.0:3307->3306/tcp, [::]:3307->3306/tcp
+yemekhane-mysql-replica-1   mysql:8.4            "docker-entrypoint.s…"   mysql-replica   7 minutes ago    Up 7 minutes (healthy)      0.0.0.0:3308->3306/tcp, [::]:3308->3306/tcp
+yemekhane-redis-1           redis:7.4-alpine     "docker-entrypoint.s…"   redis           7 minutes ago    Up 7 minutes (healthy)      0.0.0.0:6379->6379/tcp, [::]:6379->6379/tcp
+yemekhane-replica-setup-1   mysql:8.4            "bash /replica-setup…"   replica-setup   7 minutes ago    Exited (0) 40 seconds ago   
