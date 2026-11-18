@@ -118,7 +118,7 @@ services:
   frontend:
     build: ./apache
     restart: unless-stopped
-    command: ["httpd-foreground", "-D", "WEBAPI"]
+    command: ["httpd-foreground", "-D", "MVC"]
     environment:
       # Uygulamanızın container içinde dinlediği adres. Port farklıysa burayı değiştirin.
       UYGULAMA_ADRES: http://uygulama:8000
