@@ -1,0 +1,8 @@
+{% extends "web/base.html" %}
+{% block baslik %}Ana sayfa{% endblock %}
+{% block icerik %}
+  <div class="kart">
+    <h1>Hoş geldiniz, {{ kullanici.ad }}</h1>
+    <p>Rolünüz: {{ kullanici.rol }}. Bakiyeniz: {{ bakiye }} TL.</p>
+  </div>
+{% endblock %}

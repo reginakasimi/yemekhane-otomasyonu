@@ -5,9 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block baslik %}Yemekhane{% endblock %}</title>
   <link rel="stylesheet" href="/css/temel.css">
+  <style>
+    .ust { background: var(--ana); color: #fff; padding: 0.75rem 0; }
+    .ust .kapsayici { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; justify-content: space-between; }
+    .ust a, .ust span { color: #fff; }
+    .ust form { margin: 0; }
+    .kart { background: var(--yuzey); border: 1px solid var(--cizgi); border-radius: var(--kose); padding: var(--bosluk); margin: var(--bosluk) 0; }
+  </style>
 </head>
 <body>
-  <main>
+  {% if kullanici %}
+  <header class="ust">
+    <div class="kapsayici">
+      <strong>Yemekhane</strong>
+      <span>{{ kullanici.ad }} {{ kullanici.soyad }} · {{ bakiye }} TL</span>
+      <form method="post" action="/cikis">
+        {% csrf_token %}
+        <button class="dugme" type="submit">Çıkış</button>
+      </form>
+    </div>
+  </header>
+  {% endif %}
+  <main class="kapsayici">
     {% block icerik %}{% endblock %}
   </main>
 </body>

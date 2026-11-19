@@ -7,7 +7,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'ders-ortami-gizli-anahtar')
 DEBUG = False
 ALLOWED_HOSTS = ['*']
 
-# Формы отправляются на адрес Apache. Django должен ему доверять, иначе POST даст ошибку 403.
+
 CSRF_TRUSTED_ORIGINS = ['http://localhost:8080', 'http://127.0.0.1:8080']
 
 INSTALLED_APPS = ['web']
@@ -27,7 +27,7 @@ TEMPLATES = [{
     'OPTIONS': {'context_processors': ['django.template.context_processors.request']},
 }]
 
-# ORM не используем: SQL пишем сами в repositories/
+
 DATABASES = {}
 
 LANGUAGE_CODE = 'tr'
