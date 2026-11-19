@@ -6,7 +6,7 @@ _istemci = None
 
 
 def redis_istemci():
-    """Один общий клиент Redis на весь процесс."""
+    
     global _istemci
     if _istemci is None:
         _istemci = redis.Redis(

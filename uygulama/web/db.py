@@ -19,10 +19,10 @@ def _baglan(host):
 
 
 def yazma():
-    """Источник (mysql-primary): все записи и вызовы процедур."""
+    
     return _baglan(os.environ['DB_YAZMA_HOST'])
 
 
 def okuma():
-    """Реплика (mysql-replica): списки и отчёты."""
+   
     return _baglan(os.environ['DB_OKUMA_HOST'])

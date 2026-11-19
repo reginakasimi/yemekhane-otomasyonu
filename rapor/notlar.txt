@@ -114,3 +114,30 @@ yemekhane-mysql-primary-1   mysql:8.4            "docker-entrypoint.s…"   mysq
 yemekhane-mysql-replica-1   mysql:8.4            "docker-entrypoint.s…"   mysql-replica   7 minutes ago    Up 7 minutes (healthy)      0.0.0.0:3308->3306/tcp, [::]:3308->3306/tcp
 yemekhane-redis-1           redis:7.4-alpine     "docker-entrypoint.s…"   redis           7 minutes ago    Up 7 minutes (healthy)      0.0.0.0:6379->6379/tcp, [::]:6379->6379/tcp
 yemekhane-replica-setup-1   mysql:8.4            "bash /replica-setup…"   replica-setup   7 minutes ago    Exited (0) 40 seconds ago   
+
+--- AŞAMA 2: GÜNÜN MENÜSÜ ---
+
+BU EKRAN NE YAPAR?
+1. Kullanıcı yemekhaneyi, öğünü ve tarihi seçer.
+2. Uygulama o güne ait menüyü gösterir.
+3. Yemekler kategoriye göre sıralanır.
+4. Toplam kalori ve kullanıcının fiyatı gösterilir.
+5. Vejetaryen yemekler ve alerjenler işaretlenir.
+
+İSTEK YOLU (rapor için)
+urls.py → menu_controller.gunun_menusu → menu_repository.menu_detay
+→ v_menu_detay (veritabanı view'ı) → gunun_menusu.html → yanıt
+
+KATMANLAR
+- Controller: kullanıcının seçimini alır, repository'yi çağırır,
+  toplam kaloriyi hesaplar. Controller içinde SQL yok.
+- Repository: bütün SQL burada. Menü bilgisini replikadan okur.
+- Template (View): sadece veriyi gösterir. İş kuralı yok.
+
+ÖNEMLİ CÜMLELER (canlı gösterim için)
+"Menü listesi replikadan okunur, çünkü bu bir okuma işlemidir."
+"Toplam kaloriyi Controller hesaplar, şablon sadece gösterir."
+"Fiyat kullanıcının rolüne göre seçilir: öğrenci veya personel."
+"Yemekler kategori sırasına göre listelenir."
+"Menü yoksa kullanıcıya 'Bu gün ve öğün için menü yok.' mesajı gösterilir."
+"View içinde iş kuralı yok, sadece veri gösterilir."

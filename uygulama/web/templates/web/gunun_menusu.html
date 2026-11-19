@@ -1,0 +1,55 @@
+{% extends "web/base.html" %}
+{% block baslik %}Günün menüsü{% endblock %}
+{% block icerik %}
+  <h1>Günün menüsü</h1>
+
+  <form method="get" action="/menu" class="kart">
+    <p>
+      <label for="yemekhane">Yemekhane</label>
+      <select id="yemekhane" name="yemekhane">
+        {% for y in yemekhaneler %}
+          <option value="{{ y.id }}" {% if y.id == secili_yemekhane %}selected{% endif %}>{{ y.ad }}</option>
+        {% endfor %}
+      </select>
+    </p>
+    <p>
+      <label for="ogun">Öğün</label>
+      <select id="ogun" name="ogun">
+        {% for o in ogunler %}
+          <option value="{{ o.id }}" {% if o.id == secili_ogun %}selected{% endif %}>{{ o.ad }}</option>
+        {% endfor %}
+      </select>
+    </p>
+    <p>
+      <label for="tarih">Tarih</label>
+      <input id="tarih" name="tarih" type="date" value="{{ tarih }}">
+    </p>
+    <button class="dugme" type="submit">Göster</button>
+  </form>
+
+  {% if not ust %}
+    <p class="bildirim bildirim-hata" role="alert">Bu gün ve öğün için menü yok.</p>
+  {% else %}
+    <div class="kart">
+      <h2>{{ ust.yemekhane }} · {{ ust.ogun }}</h2>
+      <p>Fiyatınız: <strong>{{ fiyat }} TL</strong></p>
+      <p>Rezervasyon son zamanı: {{ ust.rezervasyon_son }}</p>
+      <p>Toplam kalori: <strong>{{ toplam_kalori }} kcal</strong></p>
+    </div>
+
+    {% for kat in kategoriler %}
+      <div class="kart">
+        <h2>{{ kat.ad }}</h2>
+        <ul>
+          {% for y in kat.yemekler %}
+            <li>
+              {{ y.yemek }} ({{ y.kalori }} kcal)
+              {% if y.vejetaryen %}<strong>· Vejetaryen</strong>{% endif %}
+              {% if y.alerjenler %}<br><small>Alerjen: {{ y.alerjenler }}</small>{% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endblock %}
