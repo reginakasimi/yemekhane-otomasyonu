@@ -1,0 +1,11 @@
+{% extends "web/base.html" %}
+{% block baslik %}Sağlık kontrolü{% endblock %}
+{% block icerik %}
+  <h1>Sağlık kontrolü</h1>
+  {% if hata %}
+    <p>Hata: {{ hata }}</p>
+  {% else %}
+    <p>Yazma (kaynak): sunucu <strong>{{ yazma.sunucu }}</strong>, salt okunur = {{ yazma.salt_okunur }}</p>
+    <p>Okuma (replika): sunucu <strong>{{ okuma.sunucu }}</strong>, salt okunur = {{ okuma.salt_okunur }}</p>
+  {% endif %}
+{% endblock %}
