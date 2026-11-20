@@ -210,3 +210,15 @@ kullanılmış menü = turnikeden geçilmiş menü
 "Menü ve yemekleri tek transaction'da kaydedilir: ya hepsi ya hiçbiri."
 "Aynı yemekhane, tarih ve öğün için ikinci menü UNIQUE kuralıyla engellenir."
 "Yazma kaynağa, liste replikaya gider."
+
+--- AŞAMA 3: REDIS ÖNBELLEK ---
+önbellek (cache)  = hızlı erişim için geçici kopya
+ıska (miss)       = önbellekte yok, veritabanından okunur
+isabet (hit)      = önbellekte var, Redis'ten okunur
+geçersiz kılmak   = eski kaydı silmek
+
+"Menü önbelleği menu:{yemekhane_id}:{tarih}:{ogun_id} anahtarıyla saklanır."
+"Anahtarın süresi o günün sonuna kadardır."
+"İlk istek veritabanından, ikinci istek Redis'ten gelir; günlükte görünür."
+"Yönetici menüyü değiştirince eski kayıt silinir, arayüz yeni menüyü gösterir."
+"Oturum oturum:{token} anahtarıyla saklanır, 30 dakikadır, her istekte yenilenir."

@@ -30,7 +30,7 @@ def gunun_menusu(request):
     ogun_id = _sayi(request.GET.get('ogun'), 2)
     tarih = _tarih(request.GET.get('tarih'))
 
-    satirlar = menu_repository.menu_detay(yemekhane_id, ogun_id, tarih)
+    satirlar = menu_repository.menu_detay_onbellekli(yemekhane_id, ogun_id, tarih)
 
     toplam_kalori = sum(s['kalori'] or 0 for s in satirlar)
 

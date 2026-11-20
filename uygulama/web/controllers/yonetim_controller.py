@@ -2,6 +2,8 @@ import datetime
 import logging
 from decimal import Decimal, InvalidOperation
 
+from web import menu_cache
+
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
 
@@ -69,12 +71,14 @@ def menu_form(request, menu_id=None):
             try:
                 if duzenleme:
                     yonetim_repository.menu_guncelle(menu_id, ogrenci, personel, yemekler)
-                    
+                    menu_cache.sil(mevcut['yemekhane_id'], mevcut['tarih'], mevcut['ogun_id'])
                     return redirect('/yonetim?ok=Menü güncellendi.')
                 tarih = datetime.date.fromisoformat(request.POST.get('tarih', ''))
+                yemekhane_id = _sayi(request.POST.get('yemekhane'), 1)
+                ogun_id = _sayi(request.POST.get('ogun'), 1)
                 yonetim_repository.menu_olustur(
-                    _sayi(request.POST.get('yemekhane'), 1), tarih,
-                    _sayi(request.POST.get('ogun'), 1), ogrenci, personel, yemekler)
+                    yemekhane_id, tarih, ogun_id, ogrenci, personel, yemekler)
+                menu_cache.sil(yemekhane_id, tarih, ogun_id)
                 return redirect('/yonetim?ok=Menü oluşturuldu.')
             except ValueError:
                 hata = 'Geçerli bir tarih girin.'
