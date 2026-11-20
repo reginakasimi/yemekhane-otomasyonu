@@ -81,3 +81,31 @@ def haftalik(request):
         'hata': hata,
     }
     return render(request, 'web/haftalik.html', baglam)
+
+
+
+
+@giris_gerekli
+def rezervasyonlarim(request):
+    kullanici = request.kullanici
+    basari, hata = None, None
+
+    if request.method == 'POST':
+        try:
+            sonuc = rezervasyon_repository.iptal_et(
+                kullanici['id'], _sayi(request.POST.get('rezervasyon_id'), 0))
+            basari = f"Rezervasyon iptal edildi. İade: {sonuc['iade']} TL, yeni bakiye: {sonuc['bakiye']} TL."
+        except IsKuraliHatasi as e:
+            hata = str(e)
+        except Exception:
+            log.exception('İptal hatası')
+            hata = 'Beklenmeyen bir hata oluştu.'
+
+    baglam = {
+        'kullanici': kullanici,
+        'bakiye': kullanici_repository.bakiye_getir(kullanici['id']),
+        'rezervasyonlar': rezervasyon_repository.kullanici_rezervasyonlari(kullanici['id']),
+        'basari': basari,
+        'hata': hata,
+    }
+    return render(request, 'web/rezervasyonlarim.html', baglam)

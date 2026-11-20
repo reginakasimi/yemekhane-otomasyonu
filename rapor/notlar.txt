@@ -141,3 +141,36 @@ KATMANLAR
 "Yemekler kategori sırasına göre listelenir."
 "Menü yoksa kullanıcıya 'Bu gün ve öğün için menü yok.' mesajı gösterilir."
 "View içinde iş kuralı yok, sadece veri gösterilir."
+
+--- AŞAMA 2: HAFTALIK MENÜ VE REZERVASYON ---
+
+haftalık menü   = bir haftanın menüsü
+rezervasyon     = yer ayırtma
+boş yer         = kalan kontenjan
+süre doldu      = rezervasyon son saati geçti
+dolu            = boş yer kalmadı
+bakiye yetersiz = hesapta yeterli para yok
+hata mesajı     = procedure'dan gelen Türkçe mesaj
+
+"Rezervasyon sp_rezervasyon_yap procedure'ü ile yapılır."
+"Yazma işlemi kaynağa gider, liste replikadan okunur."
+"Rezervasyondan sonra bakiye kaynaktan okunur, çünkü replikasyon
+ asenkrondur ve replika birkaç saniye geride kalabilir."
+"Hata mesajı değiştirilmeden kullanıcıya gösterilir."
+"Son saat karşılaştırmasını veritabanı yapar (NOW())."
+"İstek yolu: urls.py → Controller → repository → procedure → template."
+
+--- AŞAMA 2: REZERVASYONLARIM ---
+
+rezervasyonlarım = benim rezervasyonlarım
+aktif            = geçerli, henüz kullanılmadı
+kullanıldı       = turnikeden geçildi, yemek yendi
+iptal            = vazgeçildi, para iade edildi
+iptal et         = rezervasyondan vazgeçmek
+iade             = geri ödenen para
+iptal süresi     = vazgeçmek için son saat
+
+"İptal işlemi sp_rezervasyon_iptal procedure'ü ile yapılır."
+"Süre dolduysa buton pasif olur."
+"Procedure hata verirse mesaj değiştirilmeden gösterilir."
+"İptalden sonra bakiye kaynaktan okunur."

@@ -1,0 +1,36 @@
+{% extends "web/base.html" %}
+{% block baslik %}Rezervasyonlarım{% endblock %}
+{% block icerik %}
+  <h1>Rezervasyonlarım</h1>
+
+  {% if basari %}<p class="bildirim bildirim-basari" role="status">{{ basari }}</p>{% endif %}
+  {% if hata %}<p class="bildirim bildirim-hata" role="alert">{{ hata }}</p>{% endif %}
+
+  {% if not rezervasyonlar %}
+    <p class="bildirim bildirim-hata">Henüz rezervasyonunuz yok.</p>
+  {% endif %}
+
+  {% for r in rezervasyonlar %}
+    <div class="kart">
+      <h2>{{ r.yemekhane }} · {{ r.ogun }}</h2>
+      <p>
+        Tarih: {{ r.tarih|date:"d.m.Y" }} · Ücret: {{ r.ucret }} TL<br>
+        Durum:
+        {% if r.durum == 'aktif' %}<strong style="color:var(--basari)">Aktif</strong>
+        {% elif r.durum == 'kullanildi' %}<strong>Kullanıldı</strong>
+        {% else %}<strong style="color:var(--hata)">İptal</strong>{% endif %}
+      </p>
+      {% if r.durum == 'aktif' %}
+        {% if r.iptal_edilebilir %}
+          <form method="post" action="/rezervasyonlarim" style="margin:0;">
+            {% csrf_token %}
+            <input type="hidden" name="rezervasyon_id" value="{{ r.id }}">
+            <button class="dugme" type="submit">İptal et</button>
+          </form>
+        {% else %}
+          <button class="dugme" disabled>İptal süresi doldu</button>
+        {% endif %}
+      {% endif %}
+    </div>
+  {% endfor %}
+{% endblock %}
