@@ -1,6 +1,6 @@
 from django.urls import path
 
-from web.controllers import (auth_controller, menu_controller,
+from web.controllers import (auth_controller, bakiye_controller, menu_controller,
                              rezervasyon_controller, saglik_controller)
 
 urlpatterns = [
@@ -10,5 +10,6 @@ urlpatterns = [
     path('menu', menu_controller.gunun_menusu, name='menu'),
     path('hafta', rezervasyon_controller.haftalik, name='hafta'),
     path('rezervasyonlarim', rezervasyon_controller.rezervasyonlarim, name='rezervasyonlarim'),
+    path('bakiye', bakiye_controller.bakiye, name='bakiye'),
     path('saglik', saglik_controller.saglik, name='saglik'),
 ]

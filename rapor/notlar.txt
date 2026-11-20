@@ -174,3 +174,18 @@ iptal süresi     = vazgeçmek için son saat
 "Süre dolduysa buton pasif olur."
 "Procedure hata verirse mesaj değiştirilmeden gösterilir."
 "İptalden sonra bakiye kaynaktan okunur."
+
+--- AŞAMA 2: BAKİYE ---
+
+bakiye          = hesaptaki para
+yüklemek        = hesaba para eklemek
+hareket geçmişi = hesaptaki bütün işlemlerin listesi
+tür             = işlem çeşidi: yükleme, rezervasyon, iade
+tutar           = para miktarı (rezervasyonda eksi, yüklemede artı)
+
+"Bakiye yükleme sp_bakiye_yukle procedure'ü ile yapılır."
+"Yükleme tutarı 10 ile 1000 TL arasında olmalıdır; bunu procedure kontrol eder."
+"Güncel bakiye kaynaktan okunur."
+"Hareket geçmişi normalde replikadan okunur; yüklemeden hemen sonra
+ kaynaktan okunur, çünkü replika birkaç saniye geride kalabilir."
+"Bakiye her zaman hareketlerin toplamına eşittir."

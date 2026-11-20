@@ -1,0 +1,47 @@
+{% extends "web/base.html" %}
+{% block baslik %}Bakiye{% endblock %}
+{% block icerik %}
+  <h1>Bakiye</h1>
+
+  {% if basari %}<p class="bildirim bildirim-basari" role="status">{{ basari }}</p>{% endif %}
+  {% if hata %}<p class="bildirim bildirim-hata" role="alert">{{ hata }}</p>{% endif %}
+
+  <div class="kart">
+    <h2>Güncel bakiye: {{ bakiye }} TL</h2>
+    <form method="post" action="/bakiye">
+      {% csrf_token %}
+      <p>
+        <label for="tutar">Yüklenecek tutar (10 - 1000 TL)</label>
+        <input id="tutar" name="tutar" type="number" step="0.01" min="0" required>
+      </p>
+      <button class="dugme" type="submit">Bakiye yükle</button>
+    </form>
+  </div>
+
+  <div class="kart">
+    <h2>Hareket geçmişi</h2>
+    {% if not hareketler %}
+      <p>Henüz hareket yok.</p>
+    {% else %}
+      <div class="tablo-kaydir">
+        <table style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr style="text-align:left; border-bottom:1px solid var(--cizgi);">
+              <th>Tarih</th><th>Tür</th><th>Tutar</th><th>Açıklama</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for h in hareketler %}
+              <tr style="border-bottom:1px solid var(--cizgi);">
+                <td>{{ h.olusturma|date:"d.m.Y H:i" }}</td>
+                <td>{{ h.tur }}</td>
+                <td>{{ h.tutar }} TL</td>
+                <td>{{ h.aciklama|default:"" }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
