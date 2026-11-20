@@ -1,0 +1,57 @@
+{% extends "web/base.html" %}
+{% block baslik %}Haftalık menü{% endblock %}
+{% block icerik %}
+  <h1>Haftalık menü ve rezervasyon</h1>
+
+  {% if basari %}<p class="bildirim bildirim-basari" role="status">{{ basari }}</p>{% endif %}
+  {% if hata %}<p class="bildirim bildirim-hata" role="alert">{{ hata }}</p>{% endif %}
+
+  <form method="get" action="/hafta" class="kart">
+    <p>
+      <label for="yemekhane">Yemekhane</label>
+      <select id="yemekhane" name="yemekhane">
+        {% for y in yemekhaneler %}
+          <option value="{{ y.id }}" {% if y.id == secili_yemekhane %}selected{% endif %}>{{ y.ad }}</option>
+        {% endfor %}
+      </select>
+    </p>
+    <input type="hidden" name="hafta" value="{{ hafta }}">
+    <button class="dugme" type="submit">Göster</button>
+  </form>
+
+  <p>
+    <a href="/hafta?yemekhane={{ secili_yemekhane }}&hafta={{ onceki }}">← Önceki hafta</a>
+    &nbsp;|&nbsp; Hafta: {{ hafta }} &nbsp;|&nbsp;
+    <a href="/hafta?yemekhane={{ secili_yemekhane }}&hafta={{ sonraki }}">Sonraki hafta →</a>
+  </p>
+
+  {% if not gunler %}
+    <p class="bildirim bildirim-hata">Bu hafta için menü yok.</p>
+  {% endif %}
+
+  {% for g in gunler %}
+    <div class="kart">
+      <h2>{{ g.ad }} · {{ g.tarih|date:"d.m.Y" }}</h2>
+      {% for o in g.ogunler %}
+        <div style="border-top:1px solid var(--cizgi); padding:0.5rem 0;">
+          <strong>{{ o.ogun }}</strong> · {{ o.fiyat }} TL · Boş yer: {{ o.bos_yer }}/{{ o.kapasite }}<br>
+          {% if o.durum == 'rezerve' %}
+            <button class="dugme" disabled>Rezerve edildi</button>
+          {% elif o.durum == 'suresi_doldu' %}
+            <button class="dugme" disabled>Süre doldu</button>
+          {% elif o.durum == 'dolu' %}
+            <button class="dugme" disabled>Dolu</button>
+          {% else %}
+            <form method="post" action="/hafta" style="margin:0;">
+              {% csrf_token %}
+              <input type="hidden" name="menu_id" value="{{ o.menu_id }}">
+              <input type="hidden" name="yemekhane" value="{{ secili_yemekhane }}">
+              <input type="hidden" name="hafta" value="{{ hafta }}">
+              <button class="dugme" type="submit">Rezervasyon yap</button>
+            </form>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+{% endblock %}
