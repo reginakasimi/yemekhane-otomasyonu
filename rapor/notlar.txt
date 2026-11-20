@@ -189,3 +189,17 @@ tutar           = para miktarı (rezervasyonda eksi, yüklemede artı)
 "Hareket geçmişi normalde replikadan okunur; yüklemeden hemen sonra
  kaynaktan okunur, çünkü replika birkaç saniye geride kalabilir."
 "Bakiye her zaman hareketlerin toplamına eşittir."
+
+--- AŞAMA 2: DEĞERLENDİRME ---
+
+değerlendirme    = puan ve yorum vermek
+puan             = 1 ile 5 arası not
+yorum            = yazılı görüş
+kullanılmış menü = turnikeden geçilmiş menü
+
+"Yalnızca kullanılmış menü değerlendirilebilir; bu kontrolü uygulama yapar,
+ veritabanı yapmaz."
+"Kontrol repository'de: INSERT ... SELECT ile, durumu 'kullanildi' olan
+ rezervasyon varsa kayıt eklenir."
+"Aynı menüye ikinci oy veritabanındaki UNIQUE kuralı ile engellenir."
+"Puan 1-5 dışındaysa uygulama ve veritabanı (CHECK) reddeder."

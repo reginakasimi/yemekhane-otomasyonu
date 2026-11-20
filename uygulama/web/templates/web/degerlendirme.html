@@ -1,0 +1,40 @@
+{% extends "web/base.html" %}
+{% block baslik %}Değerlendirme{% endblock %}
+{% block icerik %}
+  <h1>Değerlendirme</h1>
+
+  {% if basari %}<p class="bildirim bildirim-basari" role="status">{{ basari }}</p>{% endif %}
+  {% if hata %}<p class="bildirim bildirim-hata" role="alert">{{ hata }}</p>{% endif %}
+
+  {% if not menuler %}
+    <p class="bildirim bildirim-hata">Henüz kullandığınız bir menü yok.</p>
+  {% endif %}
+
+  {% for m in menuler %}
+    <div class="kart">
+      <h2>{{ m.yemekhane }} · {{ m.ogun }}</h2>
+      <p>Tarih: {{ m.tarih|date:"d.m.Y" }}</p>
+      {% if m.puan %}
+        <p>Puanınız: <strong>{{ m.puan }}/5</strong>{% if m.yorum %}<br>Yorum: {{ m.yorum }}{% endif %}</p>
+      {% else %}
+        <form method="post" action="/degerlendirme">
+          {% csrf_token %}
+          <input type="hidden" name="menu_id" value="{{ m.menu_id }}">
+          <p>
+            <label for="puan{{ m.menu_id }}">Puan (1-5)</label>
+            <select id="puan{{ m.menu_id }}" name="puan">
+              <option value="5">5</option><option value="4">4</option>
+              <option value="3">3</option><option value="2">2</option>
+              <option value="1">1</option>
+            </select>
+          </p>
+          <p>
+            <label for="yorum{{ m.menu_id }}">Yorum</label>
+            <textarea id="yorum{{ m.menu_id }}" name="yorum" rows="3" maxlength="500"></textarea>
+          </p>
+          <button class="dugme" type="submit">Gönder</button>
+        </form>
+      {% endif %}
+    </div>
+  {% endfor %}
+{% endblock %}

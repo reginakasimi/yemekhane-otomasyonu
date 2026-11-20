@@ -1,7 +1,7 @@
 from django.urls import path
 
-from web.controllers import (auth_controller, bakiye_controller, menu_controller,
-                             rezervasyon_controller, saglik_controller)
+from web.controllers import (auth_controller, bakiye_controller, degerlendirme_controller,
+                             menu_controller, rezervasyon_controller, saglik_controller)
 
 urlpatterns = [
     path('', auth_controller.anasayfa, name='anasayfa'),
@@ -11,5 +11,6 @@ urlpatterns = [
     path('hafta', rezervasyon_controller.haftalik, name='hafta'),
     path('rezervasyonlarim', rezervasyon_controller.rezervasyonlarim, name='rezervasyonlarim'),
     path('bakiye', bakiye_controller.bakiye, name='bakiye'),
+    path('degerlendirme', degerlendirme_controller.degerlendirme, name='degerlendirme'),
     path('saglik', saglik_controller.saglik, name='saglik'),
 ]
