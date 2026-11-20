@@ -203,3 +203,10 @@ kullanılmış menü = turnikeden geçilmiş menü
  rezervasyon varsa kayıt eklenir."
 "Aynı menüye ikinci oy veritabanındaki UNIQUE kuralı ile engellenir."
 "Puan 1-5 dışındaysa uygulama ve veritabanı (CHECK) reddeder."
+
+--- AŞAMA 2: YÖNETİCİ PANELİ ---
+"Yönetici paneline yalnızca yonetici rolü girebilir, diğerleri 403 alır."
+"Doluluk ve ortalama puan v_menu_doluluk ve v_menu_puan view'larından okunur."
+"Menü ve yemekleri tek transaction'da kaydedilir: ya hepsi ya hiçbiri."
+"Aynı yemekhane, tarih ve öğün için ikinci menü UNIQUE kuralıyla engellenir."
+"Yazma kaynağa, liste replikaya gider."

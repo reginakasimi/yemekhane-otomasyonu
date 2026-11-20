@@ -1,0 +1,32 @@
+{% extends "web/base.html" %}
+{% block baslik %}Yönetici paneli{% endblock %}
+{% block icerik %}
+  <h1>Yönetici paneli</h1>
+  {% if basari %}<p class="bildirim bildirim-basari" role="status">{{ basari }}</p>{% endif %}
+  <p><a class="dugme" href="/yonetim/yeni">Yeni menü oluştur</a></p>
+
+  <div class="kart">
+    <h2>Menüler</h2>
+    <div class="tablo-kaydir">
+      <table style="width:100%; border-collapse:collapse;">
+        <thead>
+          <tr style="text-align:left; border-bottom:1px solid var(--cizgi);">
+            <th>Tarih</th><th>Yemekhane</th><th>Öğün</th><th>Doluluk</th><th>Ort. puan</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in menuler %}
+            <tr style="border-bottom:1px solid var(--cizgi);">
+              <td>{{ m.tarih|date:"d.m.Y" }}</td>
+              <td>{{ m.yemekhane }}</td>
+              <td>{{ m.ogun }}</td>
+              <td>{{ m.rezerve }}/{{ m.kapasite }} (%{{ m.doluluk_yuzde|default:"0" }})</td>
+              <td>{% if m.ortalama_puan %}{{ m.ortalama_puan }} ({{ m.oy_sayisi }} oy){% else %}-{% endif %}</td>
+              <td><a href="/yonetim/duzenle/{{ m.menu_id }}">Düzenle</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
