@@ -23,6 +23,7 @@
       <a href="/rezervasyonlarim">Rezervasyonlarım</a>
       <a href="/bakiye">Bakiye</a>
       <a href="/degerlendirme">Değerlendirme</a>
+      <a href="/profil">Profil</a>
       {% if kullanici.rol == 'yonetici' %}<a href="/yonetim">Yönetim</a>{% endif %}
       <span>{{ kullanici.ad }} {{ kullanici.soyad }} · {{ bakiye }} TL</span>
       <form method="post" action="/cikis">

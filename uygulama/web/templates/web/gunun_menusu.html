@@ -46,6 +46,7 @@
               {{ y.yemek }} ({{ y.kalori }} kcal)
               {% if y.vejetaryen %}<strong>· Vejetaryen</strong>{% endif %}
               {% if y.alerjenler %}<br><small>Alerjen: {{ y.alerjenler }}</small>{% endif %}
+              {% if y.uyari %}<br><span class="bildirim bildirim-hata" role="alert" style="display:inline-block; padding:0.25rem 0.5rem;">⚠ Alerjen uyarısı: bu yemek sizin seçtiğiniz bir alerjeni içeriyor.</span>{% endif %}
             </li>
           {% endfor %}
         </ul>

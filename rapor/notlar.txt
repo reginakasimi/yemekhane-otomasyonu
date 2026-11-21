@@ -236,3 +236,15 @@ migration       = veritabanı değişiklik dosyası
 "Kahvaltıda yarım porsiyon yoktur; bu kuralı sp_rezervasyon_yap kontrol eder."
 "Ücret hesabı procedure'dedir: yarım porsiyon = ROUND(fiyat * 0.60, 2)."
 "Alerjen tercihleri kullanici_alerjenleri tablosunda tutulur (çoka çok)."
+
+--- AŞAMA 4: ARAYÜZ ---
+porsiyon seçimi  = tam veya yarım porsiyon seçmek
+profil           = kullanıcının kendi sayfası
+alerjen uyarısı  = alerjisi olan yemeklerin işaretlenmesi
+önbellek temizliği = Redis'teki eski kayıtların silinmesi
+
+"Rezervasyonda porsiyon seçilir; ücreti ve kahvaltı kuralını procedure kontrol eder."
+"Alerjen tercihleri kullanici_alerjenleri tablosunda saklanır."
+"Menü önbelleği herkes için ortaktır; alerjen uyarısı kullanıcıya özel olduğu için
+ önbellekten sonra hesaplanır."
+"Eski menü:* kayıtları Redis'ten temizlendi."

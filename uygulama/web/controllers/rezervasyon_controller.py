@@ -1,5 +1,6 @@
 import datetime
 import logging
+from decimal import ROUND_HALF_UP, Decimal
 
 from django.shortcuts import render
 
@@ -38,7 +39,8 @@ def haftalik(request):
     if request.method == 'POST':
         try:
             sonuc = rezervasyon_repository.rezervasyon_yap(
-                kullanici['id'], _sayi(veri.get('menu_id'), 0))
+                kullanici['id'], _sayi(veri.get('menu_id'), 0),
+                veri.get('porsiyon', 'tam'))
             basari = f"Rezervasyon yapıldı. Ücret: {sonuc['ucret']} TL, yeni bakiye: {sonuc['bakiye']} TL."
         except IsKuraliHatasi as e:
             hata = str(e) 
@@ -53,6 +55,8 @@ def haftalik(request):
     gunler = {}
     for s in satirlar:
         s['fiyat'] = s['ogrenci_fiyati'] if kullanici['rol'] == 'ogrenci' else s['personel_fiyati']
+        s['yarim_var'] = s['ogun_sira'] != 1 
+        s['yarim_fiyat'] = (s['fiyat'] * Decimal('0.60')).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
         if s['menu_id'] in benim:
             s['durum'] = 'rezerve'
         elif s['suresi_doldu']:

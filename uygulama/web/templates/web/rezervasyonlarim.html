@@ -14,7 +14,7 @@
     <div class="kart">
       <h2>{{ r.yemekhane }} · {{ r.ogun }}</h2>
       <p>
-        Tarih: {{ r.tarih|date:"d.m.Y" }} · Ücret: {{ r.ucret }} TL<br>
+        Tarih: {{ r.tarih|date:"d.m.Y" }} · {% if r.porsiyon == 'yarim' %}Yarım porsiyon{% else %}Tam porsiyon{% endif %} · Ücret: {{ r.ucret }} TL<br>
         Durum:
         {% if r.durum == 'aktif' %}<strong style="color:var(--basari)">Aktif</strong>
         {% elif r.durum == 'kullanildi' %}<strong>Kullanıldı</strong>

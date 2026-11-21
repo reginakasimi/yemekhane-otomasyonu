@@ -47,6 +47,17 @@
               <input type="hidden" name="menu_id" value="{{ o.menu_id }}">
               <input type="hidden" name="yemekhane" value="{{ secili_yemekhane }}">
               <input type="hidden" name="hafta" value="{{ hafta }}">
+              {% if o.yarim_var %}
+                <p>
+                  <label for="p{{ o.menu_id }}">Porsiyon</label>
+                  <select id="p{{ o.menu_id }}" name="porsiyon">
+                    <option value="tam">Tam porsiyon ({{ o.fiyat }} TL)</option>
+                    <option value="yarim">Yarım porsiyon ({{ o.yarim_fiyat }} TL)</option>
+                  </select>
+                </p>
+              {% else %}
+                <input type="hidden" name="porsiyon" value="tam">
+              {% endif %}
               <button class="dugme" type="submit">Rezervasyon yap</button>
             </form>
           {% endif %}

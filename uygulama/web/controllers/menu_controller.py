@@ -3,7 +3,7 @@ import datetime
 from django.shortcuts import render
 
 from web.decorators import giris_gerekli
-from web.repositories import kullanici_repository, menu_repository
+from web.repositories import kullanici_repository, menu_repository, profil_repository
 
 
 def _sayi(deger, varsayilan):
@@ -31,6 +31,12 @@ def gunun_menusu(request):
     tarih = _tarih(request.GET.get('tarih'))
 
     satirlar = menu_repository.menu_detay_onbellekli(yemekhane_id, ogun_id, tarih)
+
+    
+    benim_alerjenlerim = profil_repository.secili_alerjen_idleri(request.kullanici['id'])
+    for s in satirlar:
+        idler = {int(x) for x in str(s.get('alerjen_idler') or '').replace(' ', '').split(',') if x.isdigit()}
+        s['uyari'] = bool(idler & benim_alerjenlerim)
 
     toplam_kalori = sum(s['kalori'] or 0 for s in satirlar)
 

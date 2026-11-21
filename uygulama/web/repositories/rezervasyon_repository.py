@@ -42,7 +42,7 @@ def aktif_menuler(kullanici_id, menu_idleri):
 
 
 def iptal_et(kullanici_id, rezervasyon_id):
-    """Вызывает sp_rezervasyon_iptal на источнике. Возвращает {rezervasyon_id, iade, bakiye}."""
+    
     baglanti = db.yazma()
     try:
         with baglanti.cursor() as imlec:
@@ -65,7 +65,7 @@ def kullanici_rezervasyonlari(kullanici_id):
     try:
         with baglanti.cursor() as imlec:
             imlec.execute(
-                'SELECT r.id, r.durum, r.ucret, r.olusturma, r.kullanma_zamani, r.iptal_zamani, '
+                'SELECT r.id, r.durum, r.porsiyon, r.ucret, r.olusturma, r.kullanma_zamani, r.iptal_zamani, '
                 'm.tarih, y.ad AS yemekhane, o.ad AS ogun, '
                 'COALESCE(CONCAT(m.tarih, " ", o.son_saat) > NOW(), 0) AS iptal_edilebilir '
                 'FROM rezervasyonlar r '

@@ -1,8 +1,8 @@
 from django.urls import path
 
 from web.controllers import (auth_controller, bakiye_controller, degerlendirme_controller,
-                             menu_controller, rezervasyon_controller, saglik_controller,
-                             yonetim_controller)
+                             menu_controller, profil_controller, rezervasyon_controller,
+                             saglik_controller, yonetim_controller)
 
 urlpatterns = [
     path('', auth_controller.anasayfa, name='anasayfa'),
@@ -13,6 +13,7 @@ urlpatterns = [
     path('rezervasyonlarim', rezervasyon_controller.rezervasyonlarim, name='rezervasyonlarim'),
     path('bakiye', bakiye_controller.bakiye, name='bakiye'),
     path('degerlendirme', degerlendirme_controller.degerlendirme, name='degerlendirme'),
+    path('profil', profil_controller.profil, name='profil'),
     path('yonetim', yonetim_controller.yonetim, name='yonetim'),
     path('yonetim/yeni', yonetim_controller.menu_form, name='menu_yeni'),
     path('yonetim/duzenle/<int:menu_id>', yonetim_controller.menu_form, name='menu_duzenle'),
