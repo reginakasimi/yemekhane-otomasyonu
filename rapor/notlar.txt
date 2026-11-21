@@ -222,3 +222,17 @@ geçersiz kılmak   = eski kaydı silmek
 "İlk istek veritabanından, ikinci istek Redis'ten gelir; günlükte görünür."
 "Yönetici menüyü değiştirince eski kayıt silinir, arayüz yeni menüyü gösterir."
 "Oturum oturum:{token} anahtarıyla saklanır, 30 dakikadır, her istekte yenilenir."
+
+--- AŞAMA 4: MIGRATION ---
+porsiyon        = yemeğin miktarı: tam veya yarım
+yarım porsiyon  = tam fiyatın %60'ı
+sütun           = tablodaki alan
+migration       = veritabanı değişiklik dosyası
+
+"04_degisiklik.sql tek migration dosyasıdır; db/init klasöründedir."
+"Kaynakta çalıştırdım; replikaya replikasyonla geçti. SHOW CREATE TABLE
+ çıktısını replikadan aldım."
+"Eski rezervasyonlar DEFAULT 'tam' sayesinde tam porsiyon kaldı, veri bozulmadı."
+"Kahvaltıda yarım porsiyon yoktur; bu kuralı sp_rezervasyon_yap kontrol eder."
+"Ücret hesabı procedure'dedir: yarım porsiyon = ROUND(fiyat * 0.60, 2)."
+"Alerjen tercihleri kullanici_alerjenleri tablosunda tutulur (çoka çok)."

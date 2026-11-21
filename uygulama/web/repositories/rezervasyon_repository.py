@@ -4,12 +4,12 @@ from web import db
 from web.hatalar import IsKuraliHatasi
 
 
-def rezervasyon_yap(kullanici_id, menu_id):
+def rezervasyon_yap(kullanici_id, menu_id, porsiyon='tam'):
     
     baglanti = db.yazma()
     try:
         with baglanti.cursor() as imlec:
-            imlec.execute('CALL sp_rezervasyon_yap(%s, %s)', (kullanici_id, menu_id))
+            imlec.execute('CALL sp_rezervasyon_yap(%s, %s, %s)', (kullanici_id, menu_id, porsiyon))
             sonuc = imlec.fetchone()
             while imlec.nextset():
                 pass
